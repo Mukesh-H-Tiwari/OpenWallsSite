@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#07060f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <style>html,body{background:#07060f}.layer.hidden,.hidden{visibility:hidden;opacity:0}</style>
+    <title>OpenWalls</title>
+    <script type="module" crossorigin src="./assets/index-BO1Ggmz9.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-ChFhi0LR.css">
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+
+    <!-- Wallet: visible outside of gameplay -->
+    <div id="wallet" class="wallet">
+      <button class="pill" id="pill-coins" aria-label="Coins"><span class="ic" data-icon="coin"></span><b id="coins">0</b></button>
+      <button class="pill gem" id="pill-gems" aria-label="Get gems">
+        <span class="ic" data-icon="gem"></span><b id="gems">0</b><span class="pill-plus" data-icon="plus"></span>
+      </button>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud" class="layer hidden">
+      <div class="hud-top">
+        <div class="hud-left">
+          <div class="size-meter">
+            <div class="size-icon"></div>
+            <div class="size-bar"><div id="size-fill"></div></div>
+          </div>
+          <div class="hud-coins"><span class="ic" data-icon="coin"></span><b id="run-coins">0</b></div>
+        </div>
+        <div id="score">0</div>
+        <button id="btn-pause" class="btn btn-icon btn-glass" aria-label="Pause"><span class="ic" data-icon="pause"></span></button>
+      </div>
+      <div id="effects"></div>
+      <div id="banner"></div>
+      <div id="hint">TAP TO TURN AT EACH CORNER</div>
+    </div>
+
+    <!-- Home -->
+    <div id="menu" class="layer">
+      <div class="menu-main">
+        <div class="title"><span>OPEN</span><span class="accent">WALLS</span></div>
+        <div class="best-chip"><span class="lbl">BEST</span><b id="menu-best">0</b></div>
+      </div>
+      <div class="menu-bottom">
+        <div id="boost-row" class="boost-row"></div>
+        <button id="btn-play" class="btn btn-play"><span class="ic" data-icon="play"></span>PLAY</button>
+        <div class="nav-row">
+          <button id="btn-shop" class="btn btn-icon btn-nav" aria-label="Shop"><span class="ic" data-icon="shop"></span><small>Shop</small></button>
+          <button id="btn-daily" class="btn btn-icon btn-nav" aria-label="Daily reward">
+            <span class="ic" data-icon="gift"></span><small>Daily</small><i id="daily-dot" class="dot hidden"></i>
+          </button>
+          <button id="btn-sound" class="btn btn-icon btn-nav" aria-label="Toggle sound"><span class="ic" id="sound-ic"></span><small>Sound</small></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div id="pause" class="layer dim hidden">
+      <div class="dialog">
+        <div class="dialog-title">PAUSED</div>
+        <button id="btn-resume" class="btn btn-primary btn-lg"><span class="ic" data-icon="play"></span>RESUME</button>
+        <div class="btn-row">
+          <button id="btn-home-p" class="btn btn-secondary"><span class="ic" data-icon="home"></span>Home</button>
+          <button id="btn-sound-p" class="btn btn-secondary"><span class="ic" id="sound-ic-p"></span>Sound</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revive -->
+    <div id="revive" class="layer dim hidden">
+      <div class="dialog">
+        <div class="dialog-title">CONTINUE?</div>
+        <div class="ring-wrap">
+          <svg class="ring" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="44" class="ring-bg" />
+            <circle cx="50" cy="50" r="44" class="ring-fg" id="ring-fg" />
+          </svg>
+          <div class="ring-heart"><span class="ic" data-icon="heart"></span></div>
+        </div>
+        <div class="sub-text">Score <b id="revive-score">0</b></div>
+        <button id="btn-revive" class="btn btn-gem btn-lg"></button>
+        <button id="btn-skip" class="link">No thanks</button>
+      </div>
+    </div>
+
+    <!-- Game over -->
+    <div id="over" class="layer dim hidden">
+      <div class="dialog">
+        <div class="dialog-title">CRUSHED</div>
+        <div class="final" id="final-score">0</div>
+        <div id="new-best" class="badge hidden">NEW BEST!</div>
+        <div class="stats">
+          <div class="stat"><span class="lbl">BEST</span><b id="over-best">0</b></div>
+          <div class="stat coins"><span class="lbl">EARNED</span><b><span class="ic" data-icon="coin"></span><span id="over-coins">0</span></b></div>
+        </div>
+        <div id="over-mults" class="mults"></div>
+        <button id="btn-retry" class="btn btn-primary btn-lg"><span class="ic" data-icon="retry"></span>PLAY AGAIN</button>
+        <div class="btn-row">
+          <button id="btn-home-o" class="btn btn-secondary"><span class="ic" data-icon="home"></span>Home</button>
+          <button id="btn-shop-o" class="btn btn-secondary"><span class="ic" data-icon="shop"></span>Shop</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shop -->
+    <div id="shop" class="sheet hidden">
+      <div class="sheet-head">
+        <button id="shop-back" class="btn btn-icon btn-glass" aria-label="Back"><span class="ic" data-icon="back"></span></button>
+        <div class="sheet-title">SHOP</div>
+      </div>
+      <nav id="shop-tabs" class="tabs"></nav>
+      <div id="shop-content" class="sheet-content"></div>
+    </div>
+
+    <!-- Daily reward -->
+    <div id="daily" class="layer dim hidden">
+      <div class="dialog">
+        <button id="daily-close" class="btn btn-icon btn-glass dialog-x" aria-label="Close"><span class="ic" data-icon="close"></span></button>
+        <div class="dialog-title">DAILY GIFT</div>
+        <div class="sub-text">Come back every day for bigger rewards</div>
+        <div id="daily-grid" class="daily-grid"></div>
+        <button id="btn-claim" class="btn btn-gold btn-lg">CLAIM</button>
+      </div>
+    </div>
+
+    <!-- Confirm -->
+    <div id="confirm" class="layer dim hidden">
+      <div class="dialog small">
+        <div class="dialog-title sm" id="confirm-title"></div>
+        <div class="sub-text" id="confirm-text"></div>
+        <div class="btn-row">
+          <button id="confirm-no" class="btn btn-secondary">Cancel</button>
+          <button id="confirm-yes" class="btn btn-primary">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+  </body>
+</html>
