@@ -12,8 +12,7 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <style>html,body{background:#07060f}.layer.hidden,.hidden{visibility:hidden;opacity:0}</style>
     <title>OpenWalls</title>
-    <script type="module" crossorigin src="./assets/index-BO1Ggmz9.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-ChFhi0LR.css">
+    <script type="module" crossorigin src="./assets/index-CE1h6pYu.js"></script>
   </head>
   <body>
     <canvas id="game"></canvas>
@@ -30,18 +29,58 @@
     <div id="hud" class="layer hidden">
       <div class="hud-top">
         <div class="hud-left">
-          <div class="size-meter">
+          <div
+            class="size-meter"
+            role="progressbar"
+            aria-label="Player size"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="100"
+            id="size-meter"
+          >
             <div class="size-icon"></div>
             <div class="size-bar"><div id="size-fill"></div></div>
           </div>
           <div class="hud-coins"><span class="ic" data-icon="coin"></span><b id="run-coins">0</b></div>
         </div>
-        <div id="score">0</div>
+        <div id="score" aria-label="Score">0</div>
         <button id="btn-pause" class="btn btn-icon btn-glass" aria-label="Pause"><span class="ic" data-icon="pause"></span></button>
       </div>
       <div id="effects"></div>
+      <div id="challenge-state" class="challenge-state" hidden>ZIGZAG</div>
+      <div class="run-goal" role="group" aria-label="Run goal">
+        <div class="run-goal-heading">
+          <span class="lbl">NEXT GOAL</span>
+          <b id="zone-goal">REACH ZONE 2</b>
+        </div>
+        <div
+          id="zone-goal-progress"
+          class="goal-track"
+          role="progressbar"
+          aria-label="Progress toward next zone"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="zone-progress-fill"></div>
+        </div>
+      </div>
       <div id="banner"></div>
-      <div id="hint">TAP TO TURN AT EACH CORNER</div>
+      <div id="hint" role="group" aria-label="Controls tutorial" aria-hidden="true" inert>
+        <div class="tutorial-copy">
+          <b>FOLLOW THE CORRIDOR</b>
+          <span>Turn at each corner to stay inside the walls.</span>
+          <span>Press a control to begin, or skip.</span>
+        </div>
+        <div class="tutorial-controls" aria-label="Click or tap anywhere, press any arrow key, Space, or Enter">
+          <span class="tutorial-pointer" aria-hidden="true">TAP / CLICK</span>
+          <span class="tutorial-or" aria-hidden="true">OR</span>
+          <span class="tutorial-key tutorial-key-wide" aria-hidden="true">ANY ARROW</span>
+          <span class="tutorial-key" aria-hidden="true">SPACE</span>
+          <span class="tutorial-key" aria-hidden="true">ENTER</span>
+        </div>
+        <button id="tutorial-skip" class="tutorial-skip">SKIP</button>
+      </div>
     </div>
 
     <!-- Home -->
@@ -53,6 +92,7 @@
       <div class="menu-bottom">
         <div id="boost-row" class="boost-row"></div>
         <button id="btn-play" class="btn btn-play"><span class="ic" data-icon="play"></span>PLAY</button>
+        <div class="menu-hint">CLICK / TAP · ENTER / SPACE TO PLAY</div>
         <div class="nav-row">
           <button id="btn-shop" class="btn btn-icon btn-nav" aria-label="Shop"><span class="ic" data-icon="shop"></span><small>Shop</small></button>
           <button id="btn-daily" class="btn btn-icon btn-nav" aria-label="Daily reward">
@@ -60,6 +100,11 @@
           </button>
           <button id="btn-sound" class="btn btn-icon btn-nav" aria-label="Toggle sound"><span class="ic" id="sound-ic"></span><small>Sound</small></button>
         </div>
+        <label class="volume-control" for="menu-volume">
+          <span>VOLUME</span>
+          <input id="menu-volume" type="range" min="0" max="100" step="5" value="100" aria-label="Game volume" />
+          <output id="menu-volume-value" for="menu-volume">100%</output>
+        </label>
       </div>
     </div>
 
@@ -72,6 +117,11 @@
           <button id="btn-home-p" class="btn btn-secondary"><span class="ic" data-icon="home"></span>Home</button>
           <button id="btn-sound-p" class="btn btn-secondary"><span class="ic" id="sound-ic-p"></span>Sound</button>
         </div>
+        <label class="volume-control" for="pause-volume">
+          <span>VOLUME</span>
+          <input id="pause-volume" type="range" min="0" max="100" step="5" value="100" aria-label="Game volume" />
+          <output id="pause-volume-value" for="pause-volume">100%</output>
+        </label>
       </div>
     </div>
 
@@ -87,6 +137,8 @@
           <div class="ring-heart"><span class="ic" data-icon="heart"></span></div>
         </div>
         <div class="sub-text">Score <b id="revive-score">0</b></div>
+        <button id="btn-revive-ad" class="btn btn-secondary btn-lg" hidden>▶ WATCH AD TO REVIVE</button>
+        <div id="adblock-notice" class="sub-text" role="status" hidden></div>
         <button id="btn-revive" class="btn btn-gem btn-lg"></button>
         <button id="btn-skip" class="link">No thanks</button>
       </div>
@@ -102,6 +154,7 @@
           <div class="stat"><span class="lbl">BEST</span><b id="over-best">0</b></div>
           <div class="stat coins"><span class="lbl">EARNED</span><b><span class="ic" data-icon="coin"></span><span id="over-coins">0</span></b></div>
         </div>
+        <div id="over-summary" class="run-summary"></div>
         <div id="over-mults" class="mults"></div>
         <button id="btn-retry" class="btn btn-primary btn-lg"><span class="ic" data-icon="retry"></span>PLAY AGAIN</button>
         <div class="btn-row">
