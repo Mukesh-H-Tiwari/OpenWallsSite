@@ -12,7 +12,7 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <style>html,body{background:#07060f}.layer.hidden,.hidden{visibility:hidden;opacity:0}</style>
     <title>OpenWalls</title>
-    <script type="module" crossorigin src="./assets/index-DzuopBK5.js"></script>
+    <script type="module" crossorigin src="./assets/index-D04u_KiN.js"></script>
   </head>
   <body>
     <canvas id="game"></canvas>
@@ -68,9 +68,8 @@
       <div id="banner"></div>
       <div id="hint" role="group" aria-label="Controls tutorial" aria-hidden="true" inert>
         <div class="tutorial-copy">
-          <b>FOLLOW THE CORRIDOR</b>
-          <span>Turn at each corner to stay inside the walls.</span>
-          <span>Press a control to begin, or skip.</span>
+          <b id="tutorial-title">FOLLOW THE CORRIDOR</b>
+          <span id="tutorial-instruction" aria-live="polite">Watch for the first corner.</span>
         </div>
         <div class="tutorial-controls" aria-label="Click or tap anywhere, press any arrow key, Space, or Enter">
           <span class="tutorial-pointer" aria-hidden="true">TAP / CLICK</span>
@@ -140,7 +139,7 @@
         <button id="btn-revive-ad" class="btn btn-secondary btn-lg" hidden>▶ WATCH AD TO REVIVE</button>
         <div id="adblock-notice" class="sub-text" role="status" hidden></div>
         <button id="btn-revive" class="btn btn-gem btn-lg"></button>
-        <button id="btn-skip" class="link">No thanks</button>
+        <button id="btn-skip" class="btn btn-secondary btn-lg">END RUN · VIEW RESULTS</button>
       </div>
     </div>
 
